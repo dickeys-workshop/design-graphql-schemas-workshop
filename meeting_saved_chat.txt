@@ -1,0 +1,173 @@
+19:32:08	 From cbmd : Hello @nikgraf - I’m seeing meeting gets recorded, will it be shared with attendees?
+19:33:24	 From Ari : Nice! It's pretty late here in Finland so I'm not sure if I am gonna make it through today :D
+19:33:29	 From Taylor Bell : Yeah, we will be sharing it after some light editing so you don't end up with a mult-hour recording in one shot :)
+19:33:53	 From Ari : let's hope :D
+19:34:17	 From Danny Peck : 34 online 👍🏻
+19:34:20	 From Taylor Bell : Take it away, go for it!
+19:34:38	 From Jon Crowell : yes
+19:34:40	 From coderdiaz : yes
+19:34:42	 From Simão Freitas : yap
+19:34:43	 From Chris : Yep
+19:34:57	 From cbmd : Hey @Taylor, thanks guys for insight of recordings, hopefully it would be shared in a day or two. Last question - will it be shared via email or it would be accessible within a same link we are watching onto?
+19:35:42	 From Taylor Bell : We'll send a separate email out :)
+19:41:43	 From orlandodelaguila : Hello!
+19:42:21	 From orlandodelaguila : One question, is there going to be a recording? I have meeting in one hour and don’t want to miss it. Also, sorry if you already covered this
+19:42:48	 From Armand Bour : Apparently there will be a recording yes :)
+19:43:11	 From Danny Peck : It's being recorded, the recording link will be sent out afterwards.
+19:43:29	 From orlandodelaguila : Great! Thanks chat
+19:50:18	 From Dayakar : Does the ID get returned in the result?
+19:53:54	 From Jesse : This might be covered later, but do you typically make non-ID fields nullable?
+19:57:14	 From pauleveritt : I think Gatsby makes an allProduct query that you can query on and not have to make a query for it
+19:58:21	 From Thomas Maximini : yes probably from gatsby-source-filesystem
+19:58:40	 From Dayakar : what’s the exclamation for the ID?
+19:58:48	 From Dayakar : Is that because it’s the ID?
+19:58:52	 From Armand Bour : That’s a required field
+19:59:04	 From Dayakar : got it. thx
+20:03:47	 From Dayakar : {
+  product(id: "abc"){
+    name
+    description
+    image
+  }
+}
+20:06:06	 From Thomas Maximini : "message": "Cannot query field \"price\" on type \"Product\".",
+20:07:13	 From coderdiaz : Hi Nik, One question we can use the Float type from GraphQL or only use the String type?
+20:08:06	 From Aaron Jensen : For integer, you can use Int, I don’t think Integer is defined
+20:08:13	 From Armand Bour : I think Float can cause issue depending on how ti manages decimals
+20:08:30	 From Armand Bour : but you can theoretically use it
+20:08:43	 From Nik Graf : https://github.com/nikgraf/design-graphql-schemas-workshop
+20:12:01	 From coderdiaz : And what happened with the currency type?
+20:12:36	 From Aaron Jensen : I believe it being USD only means you don’t need to return currency type, it’s assumed
+20:13:33	 From Vadim : Often prices more reliable to store as cents in db
+20:18:22	 From Marcel Fahle : schema versioning?
+20:20:05	 From yevheniiherasymchuk : This is a great talk about topic that Nik covered, backward compatibility https://www.youtube.com/watch?v=FGCqA9PjVQk
+20:32:17	 From Dayakar : how can I define a value in Price type?
+20:32:36	 From Dayakar : That’s double and 2 digits precision for the decimal?
+20:33:16	 From Yevhenii Herasymchuk : But a value is getting created only in resolver
+20:33:30	 From Yevhenii Herasymchuk : in schema you’re working with types only
+20:34:39	 From Nik Graf : @Dayakar you could implement your own Scalar type: https://www.apollographql.com/docs/graphql-tools/scalars/
+20:35:23	 From Nik Graf : For inspiration you can use this: https://github.com/Urigo/graphql-scalars
+20:37:04	 From Ryan Marsh : Just joining, is there a GitHub repo where I can catch up?
+20:37:14	 From Marcel Fahle : https://github.com/nikgraf/design-graphql-schemas-workshop
+20:37:48	 From Ryan Marsh : Thanks!
+20:46:10	 From Jesse : that does help, thank you! I've also been thinking about fields that have different access control (or might in the future) which would make sense to be nullable
+20:50:32	 From Vadim : Why not [String!]!? [String!] force us to check is it null or not before operating array
+20:52:09	 From Vadim : For [String!]! the [] is the valid value, isn’t?
+20:52:30	 From Armand Bour : Yes it is
+20:52:45	 From Vadim : thats why I always use it)
+20:52:45	 From Armand Bour : At least in Prisma
+20:52:55	 From Aaron Jensen : Yes, but empty array may not mean the same as null. Null may mean the thing can’t be accessed at this time for ACL or because the field is deprecated.
+20:53:00	 From ebenstickney : Same.
+20:54:37	 From Jesse : It is also a concern with error propogation where an error occurring with a non-nullable field propogates up to the first nullable
+20:55:09	 From Aaron Jensen : Also if a downstream server is down, for example. You’re telling the client the reviews aren’t there right now, which they may handle differently than there being 0 reviews
+20:56:11	 From Armand Bour : but wouldn’t you respond in an error in that case? I guess it depends “where you want to put your safety”
+20:58:42	 From Armand Bour : Yeah that makes sense, I haven’t thought of this, thanks a lot
+21:14:00	 From Jesse : it's also interesting there that `bioHTML` is non-nullable there, but `bio` is
+21:15:20	 From Jesse : iirc you cannot have a union of a scalar so you have to "box" the scalar types
+21:17:16	 From Yevhenii Herasymchuk : Jesse, but in case of null, they probably return something like `<p></p>`
+21:17:37	 From Ari : true… good point
+21:18:33	 From Dylan Fareed : No we don’t see the chat
+21:27:46	 From coderdiaz : Hi Nick, what do you think about this solution?
+21:28:41	 From Nik Graf : @coderdiaz: looks good
+21:28:53	 From Nik Graf : just change this part:
+21:28:55	 From Nik Graf : priceAmout: price(currency: "USD")
+21:28:56	 From Nik Graf : To
+21:29:13	 From Nik Graf : price: Price
+21:29:35	 From Nik Graf : And remove it from Query :)
+21:29:37	 From coderdiaz : Ok, and the query it’s called in the GraphiQL it’s correct?
+21:29:47	 From Nik Graf : yep
+21:30:56	 From coderdiaz : Cool, thx
+21:56:30	 From Tim : where would you put something like the recommnededProductsTotalCount, if you wanted to display “showing 5 out of XXX recommended products”?
+21:57:06	 From Jesse : we add a `total` to our `Connection' types for that purpose
+21:59:01	 From Fabio Andrade : This `total` would be inside the pageInfo type?
+21:59:19	 From Jesse : we put it outside of `pageInfo` as we viewed it as not specific to the page, but as specific to the entire connection
+22:00:21	 From Fabio Andrade : tks Jesse!
+22:02:01	 From Martin Haigh : Without a total count how do you know if you have a next page?
+22:12:51	 From Yevhenii Herasymchuk : Martin, take a look at PageInfo type, there is a boolean value for it
+22:12:59	 From Yevhenii Herasymchuk : You’ll check it on a server side
+22:18:01	 From Vadim : Should we cover multiple UI errors placement in schema later? Apollo team offers UserInputError (works only with singular field errors) but many people in GraphQL community refuses to use it because @UI errors must be a part of the scheme@ (Lee Byron’s quote)
+22:18:27	 From Vadim : https://www.apollographql.com/docs/apollo-server/data/errors/#augmenting-error-details
+22:18:43	 From Nik Graf : @Vadim: yep, will cover this in lesson 11
+22:19:18	 From Vadim : cool, that’s awesome, thanks
+22:24:58	 From Aaron Jensen : Unrelated question, what’s your opinion on 3rd party apis using GraphQL? Especially that may be consumed by slightly less technical folk. Is it still too cutting edge? Or has its time come?
+22:25:12	 From Aaron Jensen : By 3rd party, I mean “public” apis.
+22:27:11	 From zjohnson : I have a question about the this line on the Product type, `    recommendedProducts(first: Int!, after: ID): [RecommendedProductsConnection!]
+`
+22:28:17	 From zjohnson : When I run that query I seem to get back 2 “edges” on my recommended product, is this correct? I may be misunderstanding, but I would assume we would only have one “edges” key
+22:29:40	 From Yevhenii Herasymchuk : Paste your query and schema definition
+22:29:40	 From zjohnson : If I change reccomended Products to return the connections as not an array, I see the behavior I was expecting, with only a single “edges” key
+22:30:34	 From Nik Graf : @zjohnson: sorry that line is not correct! It should be:
+22:30:43	 From Nik Graf : `recommendedProducts(first: Int!, after: ID): RecommendedProductsConnection!`
+22:31:15	 From zjohnson : Ah gotcha, okay thank you!
+22:32:37	 From Nik Graf : @Aaron: I would say it highly depends on the target audience. If your target audience is very React focused you might be fine. Recently at a React conference I asked a room of 500 and gut feeling 400+ have heard of GraphQL.
+22:33:25	 From Thomas Maximini : Suddenly my Gatsby code makes more sense … edges, node etc.
+22:33:49	 From Nik Graf : If you audience is Wordpress plugin builder they might struggle with GraphQL. If there is only one use case I guess you can make nice guide telling them exactly how to do it!
+22:33:58	 From Nik Graf : @Thomas: glad to hear :)
+22:34:31	 From Thomas Maximini : I was always a bit confused why it was so nested in my Gatsby queries… now I know, thanks
+22:34:37	 From Nik Graf : @Aaron: What’s your take? GraphQL vs REST for public APIs?
+22:36:02	 From Aaron Jensen : I’m not sure. I have an e-commerce marketplace client and I’m helping them build their public API.
+22:36:18	 From Aaron Jensen : So users are anywhere from brands, to stores, to enthusiasts
+22:36:23	 From Armand Bour : I really like the self-documenting aspect of GraphQL, you can get so much info and explore so easily an API in the playground compared to a REST api. However, I guess it is less portable maybe?
+22:36:55	 From Aaron Jensen : This is a decent article on it: https://goodapi.co/blog/rest-vs-graphql
+22:37:00	 From Aaron Jensen : Okay, back to the show :)
+22:40:06	 From Aaron Jensen : ah, I was thinking hasBoughtProduct was between the review and the reviewer… like “confirmed purchase” in amazon. I guess that brings up the question of if there’s a standard for edges in “has one” connections: `user: UserEdge`, for example.
+22:41:51	 From Aaron Jensen : I guess in that case it would be the review that would have that attribute, so never mind.
+23:15:48	 From Aaron Jensen : TIL https://github.com/mojombo has user id 1
+23:18:46	 From Nik Graf : Hehe, makes sense as a founder. Someone has to test the signup flow :D
+23:22:24	 From Koji Wakayama : for mutations it seems to be recommended to use one input. what is the convention for queries? why not also one input?
+23:23:21	 From coderdiaz : What is the best place to set login is a query or a mutation?
+23:30:35	 From Aaron Jensen : The search box at the top is helpful in that case
+23:39:35	 From Aaron Jensen : Maybe it’s more likely to split up the query parameters in different parts of the query, but w/ mutations, it’s more likely to pass them all into the mutation itself?
+23:40:02	 From Koji Wakayama : thanks :)
+23:40:23	 From Aaron Jensen : Can you do something like $input.foo?
+23:42:26	 From coderdiaz : Thx
+23:45:24	 From ebenstickney : One reason I did it as a mutation @coderdiaz I have a sign up mutation for example where I am hashing the password they are creating, using bcrypt for example.  I put my sign in mutation right below because I am taking in that password from the form input and comparing it with the user’s pass word.  Something like ```const verified = bcrypt.compare(password, user.password);
+    if (!verified) {
+      throw new Error("Invalid password! Try Again");
+    }```
+23:45:44	 From Vadim : Isn’t that is explanation why login needs to be a mutation? Login can fail with wrong password and must have errors?
+23:46:07	 From ebenstickney : That’s why I have it as a mutation
+23:46:18	 From ebenstickney : I’m not an expert but why I go that route.
+23:47:49	 From Tim : querying doesn’t change state
+23:48:49	 From Vadim : Sometimes logging in captures time of login and stores it in database
+23:48:59	 From Tim : yeah, i suppose i was looking at it as a session mutation.  As an ask to create a session.
+23:49:33	 From Koji Wakayama : is there a graphql standard for the error response shape such as RFC 7807 Problem Details? how do you know how errors are returned? can you see the error shape in the docs?
+23:50:00	 From coderdiaz : What is the difference to use throw new Error or throw new GraphQLError?
+23:50:58	 From Jesse : there is a spec for the top-level errors: https://graphql.github.io/graphql-spec/June2018/#sec-Errors-and-Non-Nullability
+23:51:54	 From Jesse : err, rather https://graphql.github.io/graphql-spec/June2018/#sec-Errors
+23:52:48	 From Yevhenii Herasymchuk : @coderdiaz - it’s not native GraphQL error, it comes from some libraries only
+23:53:10	 From coderdiaz : My bad, thx
+23:54:01	 From Zac Jones : Can you configure ‘development errors’ vs ‘production errors’ so errors can be helpful to you while you build the application out?
+23:54:41	 From Zac Jones : Ahhh whitelist answers the question huh
+23:54:57	 From Aaron Jensen : https://www.apollographql.com/docs/apollo-server/data/errors/#for-the-client-response
+23:55:17	 From Aaron Jensen : Those docs cover lots of that for Apollo server
+23:56:00	 From Koji Wakayama : are you using __typename in your response to indicate where the error occurred?
+23:56:53	 From ebenstickney : I need to head to another meeting.  Looking forward to watching the video on what I missed.  Thanks so much!!!
+00:01:00	 From coderdiaz : This is a best approach for Error Handling
+00:01:01	 From coderdiaz : https://www.youtube.com/watch?v=A5-H6MtTvqk
+00:01:23	 From coderdiaz : But I don’t know if is the best or more complex.
+00:04:54	 From Aaron Jensen : The video above is #2, I believe
+00:07:44	 From Aaron Jensen : By #4 do you mean that for each error you return it in both the errors field and the global error? Or do you only put it in global error if they did not query for the error field? Or something else?
+00:08:36	 From Aaron Jensen : hah
+00:09:02	 From Aaron Jensen : I wouldn’t say suggestion, I’ve never done it :)
+00:09:33	 From coderdiaz : What do you think about InputError?
+00:10:17	 From coderdiaz : UserInputError — for validation errors on user input
+00:11:50	 From Vadim : UserInputError can’t be multiple, but form can have multiple errors at once, that’s the main and crucial con for use it instead of errors inside payload
+00:12:21	 From Eduardo Zamora : from experience adding also scope/context/source not sure how to call it but let it know if the scope of the error is internal or external(by a dependency outside our code)
+00:19:57	 From Aaron Jensen : Is it possible to use union types on inputs? Like name: String | None where None is some sentinel value like {__none: true}
+00:20:45	 From Jesse : you cannot yet, but there is an RFC https://github.com/graphql/graphql-spec/blob/master/rfcs/InputUnion.md
+00:21:07	 From Aaron Jensen : ty
+00:28:55	 From Jesse : actually, following links from that issue regarding null vs. undefined, I see the spec does actually call out that the server can treat them differently (e.g. unsetting values explicitly setting them to null): https://graphql.github.io/graphql-spec/June2018/#sec-Null-Value
+
+
+00:33:43	 From Jesse : (does actually now, it was added after that issue via https://github.com/graphql/graphql-spec/pull/83)
+00:38:20	 From Jesse : np! I wasn't sure either
+00:38:36	 From Koji Wakayama : thanks man!
+00:38:52	 From Jesse : thanks! This helped clarify and validate a lot for me
+00:38:57	 From coderdiaz : Thx Nik GrafQL
+00:39:03	 From Franklin Henderson : Thanks Nik
+00:39:07	 From Aaron Jensen : Thanks!
+00:39:21	 From Vadim : thx Nik
+00:39:23	 From Danny Peck : thank you!
+00:39:24	 From Tim : Thank you Nik
+00:39:24	 From Eduardo Zamora : Thanks
