@@ -1,5 +1,39 @@
 # Design Graphql Schemas Workshop
 
+## Intro
+
+```
+GraphQL brings joy to using APIs. Even though it's based on a type system, GraphQL in many ways is more flexible than REST.
+
+Even though it's based on a type system, in many ways GraphQL is more flexible than REST.
+
+But the flexibility that makes GraphQL a joy to work with can have its downsides if you aren't careful.
+
+Schema design is an area where one small oversight at the beginning can get you stuck having to deal with weird naming, bloated duplicates, and other annoying workarounds.
+
+It doesn't have to be like this!
+
+Nik Graf has extensive experience designing GraphQL schemas, for a variety of business applications.
+
+In this workshop, Nik has prepared several examples following different design patterns. Through exploration and comparison, you'll come away from this workshop with actionable knowledge for designing and extending schemas.
+
+Follow Nik, and avoid making Schema mistakes that will come back to bite you later.
+
+This live remote workshop will be held on November 11, 2019 at 10:30 am - 1:30 pm Pacific​
+
+Workshop Topics Include:
+
+Naming conventions for fields, queries, mutations
+GraphQL Aliases
+Benefits of nullable fields and when to use them
+Connection Specification and why you want to use it
+Extending connections to attach relationship metadata
+Extending connections to build pagination UI
+Mutation Payload Design
+Handling expected errors for Mutations
+GraphQL RFCs e.g. Datetime, Union Input Types
+```
+
 ## Setup
 
 ```
